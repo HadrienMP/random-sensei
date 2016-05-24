@@ -14,10 +14,10 @@ MESSAGE_COLOR = "yellow"
 def random_sensei():
     request_data = json.loads(request.data)
     
-    if _is_valid(request_data):
-        arguments_string = _extract_arguments(request_data)
-        requester = _extract_requester(request_data)
-        message = services.get_message(arguments_string, requester)
+    arguments_string = _extract_arguments(request_data)
+    requester = _extract_requester(request_data)
+    requesters_room = _extract_requesters_room(request_data)
+    message = services.get_message(arguments_string, requester, requesters_room)
     
     if not message:
         message = 'Wait... What ? (boom)'
@@ -28,14 +28,6 @@ def random_sensei():
         "notify": False,
         "message_format": "text"
     })
-    
-    
-def _is_valid(request_data):
-    return 'item' in request_data \
-        and 'message' in request_data['item'] \
-        and 'message' in request_data['item']['message'] \
-        and 'from' in request_data['item']['message'] \
-        and 'mention_name' in request_data['item']['message']['from']
         
         
 def _extract_arguments(request_data):
@@ -52,3 +44,7 @@ def _extract_arguments(request_data):
     
 def _extract_requester(request_data):
     return request_data['item']['message']['from']['mention_name']
+    
+    
+def _extract_requesters_room(request_data):
+    return request_data['item']['room']['id']
