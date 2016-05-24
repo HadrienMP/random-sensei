@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
-import evenly_distributed_picker
 import random
+from application import hipchat_client
 
-SENSEIS = [
-    {'name': 'Thomas', 'times_picked': 0},
-    {'name': 'Raphaël', 'times_picked': 0},
-    {'name': 'Céline', 'times_picked': 0},
-    {'name': 'Ali', 'times_picked': 0},
-    {'name': 'Hadrien', 'times_picked': 0},
-]
+
 FUNNY_GIFS = [
     "http://45.media.tumblr.com/c055bc68805f88771faf825b901e9bcc/tumblr_nvrrypkvaK1ubyc4yo6_500.gif",
     "https://media.giphy.com/media/qJVCvxP2kC3EQ/giphy.gif",
@@ -29,15 +23,11 @@ def get_message(arguments_string, requester=None):
         
 
 def _random_senseis_message(requester=None):
-    picked_senseis = random.sample(SENSEIS,2)
-        
-    senseis_names = list()
-    for sensei in picked_senseis:
-        senseis_names.append(sensei['name'])
-        sensei['times_picked'] += 1
-        
+    senseis = hipchat_client.room_members()
+    senseis.remove(requester)
+    picked_senseis = random.sample(senseis,2)
     
-    message = "Your senseis for today are : {} and {}".format(*senseis_names)
+    message = "Your senseis for today are : @{} and @{}".format(*picked_senseis)
     
     if requester:
         message = "@" + requester + " " + message
