@@ -39,7 +39,7 @@ def _extract_arguments(request_data):
     else:
         arguments_string = ''
         
-    return arguments_string
+    return arguments_string.strip()
     
     
 def _extract_requester(request_data):

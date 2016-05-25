@@ -1,4 +1,4 @@
-FUNNY_GIFS = [
+SENSEI_GIFS = [
     "http://45.media.tumblr.com/c055bc68805f88771faf825b901e9bcc/tumblr_nvrrypkvaK1ubyc4yo6_500.gif",
     "https://media.giphy.com/media/qJVCvxP2kC3EQ/giphy.gif",
     "http://i.giphy.com/IDAHKQVpqDeKs.gif",
