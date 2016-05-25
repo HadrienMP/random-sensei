@@ -83,7 +83,7 @@ def test_should_return_all_as_sensei_when_all_are_required():
     # SETUP
     senseis = ['1', '2', '3', '4']
     hipchat_client.room_members = Mock(return_value=senseis)
-    number_of_senseis = str(len(senseis))
+    number_of_senseis = len(senseis)
     
     # TEST
     message = random_senseis_message(number_of_senseis=number_of_senseis, room='test')
