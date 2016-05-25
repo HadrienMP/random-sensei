@@ -16,12 +16,12 @@ def get_message(arguments_string=None, requester=None, room=None):
     if arguments_string in WHO_ARE_YOU:
         return "This is not the answer you seek little beetle"
     elif arguments_string == '':
-        return random_senseis_message(room, requester)
+        return _random_senseis_message(room, requester)
     elif re.match(r'^\d+$', arguments_string):
         return _random_senseis_message(room, requester=requester, number_of_senseis=int(arguments_string))
         
 
-def random_senseis_message(room, requester=None, number_of_senseis=2):
+def _random_senseis_message(room, requester=None, number_of_senseis=2):
     senseis = hipchat_client.room_members(room)
     
     if requester:
@@ -39,3 +39,15 @@ def random_senseis_message(room, requester=None, number_of_senseis=2):
         message = "@" + requester + " " + message
     
     return message + '\n' + random.choice(SENSEI_GIFS)
+
+
+def _pick_random_senseis(senseis, number_of_senseis=2, requester=None):
+    if requester:
+        senseis.remove(requester)
+
+    if len(senseis) == 0 or number_of_senseis <= 0:
+        return list()
+    elif len(senseis) <= number_of_senseis:
+        return senseis
+    else:
+        return random.sample(senseis, number_of_senseis)
