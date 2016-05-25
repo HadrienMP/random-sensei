@@ -1,4 +1,7 @@
 Flask
+requests
+
+# Tests
 pytest
 mock
-requests
+pytest-cov
