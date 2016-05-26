@@ -2,3 +2,4 @@ config/cloud9.py
 config/local.py
 .cache
 .idea
+.coverage

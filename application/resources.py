@@ -1,11 +1,10 @@
 # -*-  coding: utf-8-*-
-from flask import jsonify
 from flask import json
+from flask import jsonify
 from flask import request
-from application import app
-import re
-from application import services
 
+from application import app
+from application.services import *
 
 MESSAGE_COLOR = "yellow"
 
@@ -14,10 +13,10 @@ MESSAGE_COLOR = "yellow"
 def random_sensei():
     request_data = json.loads(request.data)
     
+    requesters_room = _extract_requesters_room(request_data)
     arguments_string = _extract_arguments(request_data)
     requester = _extract_requester(request_data)
-    requesters_room = _extract_requesters_room(request_data)
-    message = services.get_message(arguments_string, requester, requesters_room)
+    message = build_message(requesters_room, arguments_string, requester)
     
     if not message:
         message = 'Wait... What ? (boom)'
