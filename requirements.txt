@@ -2,7 +2,7 @@ Flask
 requests
 
 # Tests
-pytest
+pytest>=2.7
 mock
 pytest-cov
 pytest-flask
