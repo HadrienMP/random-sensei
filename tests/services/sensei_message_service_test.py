@@ -90,3 +90,56 @@ def test_should_return_all_as_sensei_when_all_are_required():
     # ASSERT
     assert message.count('@') == 1
     assert '@all' in message
+
+
+def test_should_not_include_exluded_sensei():
+    # SETUP
+    senseis = ['1', '2', '3', '4']
+    hipchat_client.get_room_members = Mock(return_value=senseis)
+
+    # TEST
+    message = random_senseis_message(room='test', number_of_senseis=2, excluded_senseis='1')
+
+    # ASSERT
+    assert '@1' not in message
+
+
+def test_should_not_include_exluded_senseis():
+    # SETUP
+    senseis = ['1', '2', '3', '4', '5']
+    hipchat_client.get_room_members = Mock(return_value=senseis)
+
+    # TEST
+    message = random_senseis_message(room='test', number_of_senseis=2, excluded_senseis=['1', '2'])
+
+    # ASSERT
+    assert '@1' not in message
+    assert '@2' not in message
+
+
+def test_should_not_exclude_nor_include_member_that_is_not_in_room():
+    # SETUP
+    senseis = ['2', '3', '4']
+    hipchat_client.get_room_members = Mock(return_value=senseis)
+
+    # TEST
+    message = random_senseis_message(room='test', number_of_senseis=2, excluded_senseis='1')
+
+    # ASSERT
+    assert '@1' not in message
+
+
+def test_should_not_return_all_as_master_when_a_member_was_excluded_from_the_senseis():
+    # SETUP
+    senseis = ['1', '2', '3']
+    hipchat_client.get_room_members = Mock(return_value=senseis)
+
+    # TEST
+    message = random_senseis_message(room='test', number_of_senseis=2, excluded_senseis='1')
+
+    # ASSERT
+    assert '@1' not in message
+    assert '@all' not in message
+
+
+# TODO ajouter des tests pour les senseis exclus multiples

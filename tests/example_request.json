@@ -1,0 +1,36 @@
+{
+  "event": "room_message",
+  "item": {
+    "message": {
+      "date": "2016-07-29T20:37:39.307894+00:00",
+      "from": {
+        "id": 3485772,
+        "links": {
+          "self": "https://api.hipchat.com/v2/user/3485772"
+        },
+        "mention_name": "HadrienMensPellen",
+        "name": "Hadrien Mens-Pellen",
+        "version": "NJBP9V84"
+      },
+      "id": "3acf81f6-742e-42ed-a658-868a0aac70bd",
+      "mentions": [],
+      "message": "/sensei",
+      "type": "message"
+    },
+    "room": {
+      "id": 2761495,
+      "is_archived": false,
+      "links": {
+        "members": "https://api.hipchat.com/v2/room/2761495/member",
+        "participants": "https://api.hipchat.com/v2/room/2761495/participant",
+        "self": "https://api.hipchat.com/v2/room/2761495",
+        "webhooks": "https://api.hipchat.com/v2/room/2761495/webhook"
+      },
+      "name": "Testhmp",
+      "privacy": "private",
+      "version": "YXHRVKSJ"
+    }
+  },
+  "oauth_client_id": "52bf7028-fa2e-40dd-b43b-3c6e1637a642",
+  "webhook_id": 5572233
+}

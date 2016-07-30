@@ -5,24 +5,32 @@ from application.services import hipchat_client
 from config.sensei_gifs import *
 
 
-def random_senseis_message(room, number_of_senseis=2, requester=None):
+def random_senseis_message(room, number_of_senseis, requester=None, excluded_senseis=None):
+    room_members = _get_room_members_without_requester(room, requester)
+    senseis = _get_potential_senseis(room_members, excluded_senseis)
+    picked_senseis = _pick_random_senseis(senseis=senseis, number_of_senseis=number_of_senseis)
 
-    senseis = hipchat_client.get_room_members(room)
-    picked_senseis = _pick_random_senseis(senseis=senseis, number_of_senseis=number_of_senseis, requester=requester)
-
-    message = _build_message(senseis, picked_senseis)
-
-    requester_prefix = _get_requester_prefix(requester)
-    message = requester_prefix + message
+    message = _build_message(room_members, picked_senseis)
+    message = _address_message_to_requester(message, requester)
     message += _gif()
 
     return message
 
 
-def _pick_random_senseis(senseis, number_of_senseis=2, requester=None):
-    if requester:
-        senseis.remove(requester)
+def _get_room_members_without_requester(room, requester=None):
+    room_members = hipchat_client.get_room_members(room)
+    if requester and requester in room_members:
+        room_members.remove(requester)
 
+    return room_members
+
+
+def _get_potential_senseis(room_members, excluded_senseis=None):
+    excluded_senseis = excluded_senseis if excluded_senseis else list()
+    return [sensei for sensei in room_members if sensei not in excluded_senseis]
+
+
+def _pick_random_senseis(senseis, number_of_senseis):
     if len(senseis) == 0 or number_of_senseis <= 0:
         return list()
     elif len(senseis) <= number_of_senseis:
@@ -31,21 +39,27 @@ def _pick_random_senseis(senseis, number_of_senseis=2, requester=None):
         return random.sample(senseis, number_of_senseis)
 
 
-def _build_message(senseis, picked_senseis):
+def _build_message(room_members, picked_senseis):
     if len(picked_senseis) == 0:
         message = "Looks like you are going to have to be your own master..."
-    elif len(picked_senseis) == len(senseis):
-        message = "You want @all to be your senseis ?"
+    elif len(picked_senseis) == len(room_members):
+        message = "Do you want @all to be your senseis ?"
     else:
-        message = "Your senseis for today are : " + ' and '.join(['@' + sensei_name for sensei_name in picked_senseis])
+        message = "Your senseis are : " + ' and '.join(['@' + sensei_name for sensei_name in picked_senseis])
     return message
 
 
-def _gif():
-    return '\n' + random.choice(SENSEI_GIFS)
+def _address_message_to_requester(message, requester=None):
+    requester_prefix = _get_requester_prefix(requester)
+    message = requester_prefix + message
+    return message
 
 
 def _get_requester_prefix(requester):
     if requester:
         return "@" + requester + " "
     return ''
+
+
+def _gif():
+    return '\n' + random.choice(SENSEI_GIFS)

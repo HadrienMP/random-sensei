@@ -10,5 +10,6 @@ SENSEI_GIFS = [
     "http://media2.giphy.com/media/RyvaihB82Vsis/giphy.gif",
     "http://media4.giphy.com/media/DvUVuMvftZGiQ/giphy.gif",
     "http://media.giphy.com/media/Mup6Egrvpgu6A/giphy-tumblr.gif",
-    "http://a4.img.v4.skyrock.net/9556/47739556/pics/1964895431_1.gif"
+    "http://a4.img.v4.skyrock.net/9556/47739556/pics/1964895431_1.gif",
+    "http://media.giphy.com/media/TArE7tgIC4FcQ/giphy-tumblr.gif"
 ]
