@@ -1,8 +1,10 @@
 import os
 
+import pytest
 from flask import url_for
-from application.services import hipchat_client
 from mock import Mock
+
+from application.services import hipchat_client
 
 
 DIR = os.path.dirname(os.path.realpath(__file__))
@@ -22,8 +24,9 @@ def test_integration_nominal_case(client):
     assert '@HadrienMensPellen Looks like you are going to have to be your own master...\n' in response['message']
 
 
-def test_integration_nominal_case(client):
+def test_integration_nominal_case(client, mocker):
     # SETUP
+    mocker.patch('application.services.hipchat_client.get_room_members')
     hipchat_client.get_room_members = Mock(return_value=['foo', 'bar', 'qix', 'qux', 'qax', 'qex', 'HadrienMensPellen'])
 
     with open(DIR + '/full_request.json', 'r') as f:

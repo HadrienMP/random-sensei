@@ -6,3 +6,4 @@ pytest
 mock
 pytest-cov
 pytest-flask
+pytest-mock
