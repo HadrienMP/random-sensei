@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import re
 
-ALL_BUT_SPACE = '[^ ]'
-
-ARGUMENT_REGEX = r'^/' + ALL_BUT_SPACE + '+\s+(.*)\s*'
+COMMAND = r'[^ ]+'
+ARGUMENTS = r'(.*)'
+ARGUMENT_REGEX = r'^/' + COMMAND + '(\s+' + ARGUMENTS + r')?\s*$'
 NUMBER_OF_SENSEI_REGEX = r'^\s*\d+\s*$'
 EXCLUSION_REGEX = r'^(--without|-w)$'
 
@@ -11,10 +11,12 @@ EXCLUSION_REGEX = r'^(--without|-w)$'
 def from_command(command):
     arguments = Arguments()
 
-    # TODO lancer une exception si la commande ne matche pas le format attendu
     m = re.search(ARGUMENT_REGEX, command)
-    if m:
-        arguments_strings = m.group(1).split(" ")
+    if not m:
+        raise SenseiCommandException("This is not a valid sensei command")
+
+    elif m.group(2):
+        arguments_strings = m.group(2).split(" ")
 
         arguments.number_of_senseis = get_number_of_senseis(arguments_strings)
         arguments.excluded_senseis = get_exclusions(arguments_strings)
@@ -37,10 +39,7 @@ def get_exclusions(arguments_strings):
         if add_to_exclusions:
             excluded_senseis.append(argument_string.replace('@', ''))
         else:
-            m = re.search(EXCLUSION_REGEX, argument_string)
-            if m:
-                add_to_exclusions = True
-            
+            add_to_exclusions = re.match(EXCLUSION_REGEX, argument_string)
 
     return excluded_senseis
 
@@ -49,3 +48,7 @@ class Arguments:
     def __init__(self):
         self.number_of_senseis = 2
         self.excluded_senseis = list()
+
+
+class SenseiCommandException(Exception):
+    pass

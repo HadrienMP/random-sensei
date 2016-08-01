@@ -9,6 +9,8 @@ from application.services import argument_extractor
 
 import random
 
+from application.services.argument_extractor import SenseiCommandException
+
 MESSAGE_COLORS = ["yellow", "blue", "green", "purple"]
 
 
@@ -17,12 +19,17 @@ def random_sensei():
     request_data = json.loads(request.data)
 
     requesters_room = _extract_requesters_room(request_data)
-    arguments = _extract_arguments(request_data)
-    requester = _extract_requester(request_data)
-    message = build_message(requesters_room, arguments, requester)
+    try:
+        arguments = _extract_arguments(request_data)
+        requester = _extract_requester(request_data)
+        message = build_message(requesters_room, arguments, requester)
+        color = random.choice(MESSAGE_COLORS)
+    except SenseiCommandException:
+        message = "Are you talking to me ?" # TODO add a help command
+        color = "red"
 
     return jsonify({
-        "color": random.choice(MESSAGE_COLORS),
+        "color": color,
         "message": message,
         "notify": False,
         "message_format": "text"
