@@ -42,7 +42,7 @@ def test_should_use_default_arguments_when_absent():
 
 def test_should_extract_excluded_senseis():
     # TEST
-    arguments = from_command('/random-sensei -foo -bar')
+    arguments = from_command('/random-sensei --without foo bar')
 
     # ASSERT
     assert arguments.excluded_senseis == ['foo', 'bar']
@@ -50,7 +50,7 @@ def test_should_extract_excluded_senseis():
 
 def test_should_extract_excluded_senseis_with_arobase():
     # TEST
-    arguments = from_command('/random-sensei -@foo')
+    arguments = from_command('/random-sensei --without @foo')
 
     # ASSERT
     assert arguments.excluded_senseis == ['foo']
@@ -58,7 +58,19 @@ def test_should_extract_excluded_senseis_with_arobase():
 
 def test_should_exclude_even_weird_names():
     # TEST
-    arguments = from_command('/random-sensei -@[|{$ẑfgg')
+    arguments = from_command('/random-sensei --without @[|{$ẑfgg')
 
     # ASSERT
     assert arguments.excluded_senseis == ['[|{$ẑfgg']
+
+
+def test_should_extract_excluded_senseis_with_short_param_command():
+    # TEST
+    arguments = from_command('/random-sensei -w foo bar')
+
+    # ASSERT
+    assert arguments.excluded_senseis == ['foo', 'bar']
+    
+# TODO tester qu'avec un une chaine ne matchant pas ^/.* on ignore la requête ou alors qu'on renvoie "Are you talking to me ?"
+# TODO tester avec un autre argument derrière
+# TODO la mécanique d'exclusion avec des valeurs non existantes

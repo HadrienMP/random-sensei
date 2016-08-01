@@ -14,7 +14,7 @@
       },
       "id": "3acf81f6-742e-42ed-a658-868a0aac70bd",
       "mentions": [],
-      "message": "/sensei 4 -foo -bar",
+      "message": "/sensei 4 --without foo bar",
       "type": "message"
     },
     "room": {

@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import re
 
+ALL_BUT_SPACE = '[^ ]'
 
-ARGUMENT_REGEX = r'/[^ ]+\s+(.*)\s*'
+ARGUMENT_REGEX = r'^/' + ALL_BUT_SPACE + '+\s+(.*)\s*'
 NUMBER_OF_SENSEI_REGEX = r'^\s*\d+\s*$'
-EXCLUSION_REGEX = r'^\s*-@?([^ ]+)\s*$'
+EXCLUSION_REGEX = r'^(--without|-w)$'
 
 
 def from_command(command):
@@ -31,10 +32,15 @@ def get_number_of_senseis(arguments_strings):
 def get_exclusions(arguments_strings):
     excluded_senseis = list()
 
+    add_to_exclusions = False
     for argument_string in arguments_strings:
-        m = re.search(EXCLUSION_REGEX, argument_string)
-        if m:
-            excluded_senseis.append(m.group(1))
+        if add_to_exclusions:
+            excluded_senseis.append(argument_string.replace('@', ''))
+        else:
+            m = re.search(EXCLUSION_REGEX, argument_string)
+            if m:
+                add_to_exclusions = True
+            
 
     return excluded_senseis
 
