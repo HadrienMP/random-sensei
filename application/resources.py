@@ -2,6 +2,7 @@
 from flask import json
 from flask import jsonify
 from flask import request
+from flask import render_template
 
 from application import app
 from application.services import *
@@ -13,15 +14,18 @@ from application.services.argument_extractor import SenseiCommandException
 
 MESSAGE_COLORS = ["yellow", "blue", "green", "purple"]
 
+@app.route("/", methods=['GET'])
+def home():
+    return render_template("home.html")
 
 @app.route("/", methods=['POST'])
 def random_sensei():
     request_data = json.loads(request.data)
 
     requesters_room = _extract_requesters_room(request_data)
+    arguments = _extract_arguments(request_data)
+    requester = _extract_requester(request_data)
     try:
-        arguments = _extract_arguments(request_data)
-        requester = _extract_requester(request_data)
         message = build_message(requesters_room, arguments, requester)
         color = random.choice(MESSAGE_COLORS)
     except SenseiCommandException:
