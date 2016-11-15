@@ -22,15 +22,7 @@ def home():
 def random_sensei():
     request_data = json.loads(request.data)
 
-    requesters_room = _extract_requesters_room(request_data)
-    arguments = _extract_arguments(request_data)
-    requester = _extract_requester(request_data)
-    try:
-        message = build_message(requesters_room, arguments, requester)
-        color = random.choice(MESSAGE_COLORS)
-    except SenseiCommandException:
-        message = "Are you talking to me ?" # TODO add a help command
-        color = "red"
+    (message, color) = __build_response(request_data)
 
     return jsonify({
         "color": color,
@@ -38,7 +30,20 @@ def random_sensei():
         "notify": False,
         "message_format": "text"
     })
-
+    
+def __build_response(request_data):
+    try:
+        requesters_room = _extract_requesters_room(request_data)
+        arguments = _extract_arguments(request_data)
+        requester = _extract_requester(request_data)
+    
+        message = build_message(requesters_room, arguments, requester)
+        color = random.choice(MESSAGE_COLORS)
+    except SenseiCommandException:
+        message = "Are you talking to me ?" # TODO add a help command
+        color = "red"
+        
+    return message, color
 
 def _extract_arguments(request_data):
     command = request_data['item']['message']['message']

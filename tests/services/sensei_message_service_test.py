@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 from mock import Mock
 
@@ -154,3 +155,18 @@ def test_should_not_return_all_as_master_when_a_member_was_excluded_from_the_sen
     # ASSERT
     assert '@1' not in message
     assert '@all' not in message
+    
+
+def test_should_not_include_exluded_senseis_for_team_backen(mocker):
+    for i in range(0,100):
+        # SETUP
+        senseis = ['CelineDanglet', 'pierrealain', 'AliBELKADY', 'vcarmignac', 'RaphaëlOdienne', 'HadrienMensPellen', 'FabienHiegel']
+        mocker.patch(ROOM_MEMBERS)
+        hipchat_client.get_room_members = Mock(return_value=senseis)
+    
+        # TEST
+        message = random_senseis_message(room='test', number_of_senseis=2, excluded_senseis=['pierrealain', 'AliBELKADY', 'vcarmignac'])
+    
+        # ASSERT
+        assert '@1' not in message
+        assert '@2' not in message

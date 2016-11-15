@@ -51,11 +51,11 @@ def test_should_return_a_red_error_message_when_command_is_not_well_formed(clien
     request = build_request_with_command("not valid command")
 
     # TEST
-    response = client.post(url_for('random_sensei'), data=request).json
+    response = client.post(url_for('random_sensei'), data=request)
 
     # ASSERT
-    assert response['color'] == "red"
-    assert "talking to me" in response['message']
+    assert response.json['color'] == "red"
+    assert "talking to me" in response.json['message']
 
 
 def build_request_with_command(command):
