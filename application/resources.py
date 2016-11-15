@@ -20,9 +20,8 @@ def home():
 
 @app.route("/", methods=['POST'])
 def random_sensei():
-    request_data = json.loads(request.data)
 
-    (message, color) = __build_response(request_data)
+    (message, color) = __build_response(request)
 
     return jsonify({
         "color": color,
@@ -31,8 +30,9 @@ def random_sensei():
         "message_format": "text"
     })
     
-def __build_response(request_data):
+def __build_response(request):
     try:
+        request_data = to_json(request);
         requesters_room = _extract_requesters_room(request_data)
         arguments = _extract_arguments(request_data)
         requester = _extract_requester(request_data)
@@ -44,6 +44,12 @@ def __build_response(request_data):
         color = "red"
         
     return message, color
+    
+def to_json(request):
+    try:
+        return json.loads(request.data)
+    except ValueError:
+        raise SenseiCommandException("The request does not contain json");
 
 def _extract_arguments(request_data):
     command = request_data['item']['message']['message']

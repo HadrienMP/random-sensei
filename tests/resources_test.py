@@ -8,6 +8,14 @@ from application.services import argument_extractor
 from application.services.argument_extractor import SenseiCommandException
 
 
+def test_home_page(client):
+    # TEST
+    response = client.get(url_for('random_sensei'))
+
+    # ASSERT
+    assert response.status_code == 200
+
+
 def test_integration_nominal_case(client):
     # SETUP
     request = build_request_with_command("/sensei")
@@ -52,6 +60,15 @@ def test_should_return_a_red_error_message_when_command_is_not_well_formed(clien
 
     # TEST
     response = client.post(url_for('random_sensei'), data=request)
+
+    # ASSERT
+    assert response.json['color'] == "red"
+    assert "talking to me" in response.json['message']
+
+
+def test_should_return_a_red_error_message_when_request_does_not_contain_data(client, mocker):
+    # TEST
+    response = client.post(url_for('random_sensei'))
 
     # ASSERT
     assert response.json['color'] == "red"
