@@ -3,6 +3,7 @@ import os
 from flask import url_for
 from mock import Mock
 
+from application import app
 from application.services import *
 from application.services import argument_extractor
 from application.services.argument_extractor import SenseiCommandException
@@ -16,6 +17,19 @@ def test_home_page(client):
     assert response.status_code == 200
 
 
+def test_should_return_the_manual_for_a_help_command(client):
+    # SETUP
+    request = build_request_with_command("/sensei --help")
+    
+    # TEST
+    response = client.post(url_for('random_sensei'), data=request).json
+    
+    # ASSERT
+    assert response['color'] != ''
+    assert response['message'] == app.config['MANUAL']
+
+# TODO Test -h
+
 def test_integration_nominal_case(client):
     # SETUP
     request = build_request_with_command("/sensei")
@@ -25,7 +39,6 @@ def test_integration_nominal_case(client):
 
     # ASSERT
     assert response['color'] != ''
-    assert response['message'] != ''
     assert '@HadrienMensPellen Looks like you are going to have to be your own master...\n' in response['message']
 
 

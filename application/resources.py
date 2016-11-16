@@ -33,6 +33,7 @@ def random_sensei():
 def __build_response(request):
     try:
         request_data = to_json(request);
+        
         requesters_room = _extract_requesters_room(request_data)
         arguments = _extract_arguments(request_data)
         requester = _extract_requester(request_data)

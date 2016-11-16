@@ -19,6 +19,7 @@ def from_command(command):
         arguments_strings = m.group(2).split(" ")
 
         arguments.number_of_senseis = get_number_of_senseis(arguments_strings)
+        arguments.manual = is_manual_asked(arguments_strings)
         arguments.excluded_senseis = get_exclusions(arguments_strings)
 
     return arguments
@@ -29,6 +30,10 @@ def get_number_of_senseis(arguments_strings):
         return int(arguments_strings[0].strip())
     else:
         return 2
+
+
+def is_manual_asked(arguments_strings):
+    return "-h" in arguments_strings or "--help" in arguments_strings
 
 
 def get_exclusions(arguments_strings):
@@ -48,6 +53,7 @@ class Arguments:
     def __init__(self):
         self.number_of_senseis = 2
         self.excluded_senseis = list()
+        self.manual = False
 
 
 class SenseiCommandException(Exception):
