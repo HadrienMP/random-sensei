@@ -7,3 +7,4 @@ mock
 pytest-cov
 pytest-flask
 pytest-mock
+assertpy

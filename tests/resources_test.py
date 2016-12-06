@@ -17,19 +17,6 @@ def test_home_page(client):
     assert response.status_code == 200
 
 
-def test_should_return_the_manual_for_a_help_command(client):
-    # SETUP
-    request = build_request_with_command("/sensei --help")
-    
-    # TEST
-    response = client.post(url_for('random_sensei'), data=request).json
-    
-    # ASSERT
-    assert response['color'] != ''
-    assert response['message'] == app.config['MANUAL']
-
-# TODO Test -h
-
 def test_integration_nominal_case(client):
     # SETUP
     request = build_request_with_command("/sensei")
@@ -40,6 +27,18 @@ def test_integration_nominal_case(client):
     # ASSERT
     assert response['color'] != ''
     assert '@HadrienMensPellen Looks like you are going to have to be your own master...\n' in response['message']
+
+
+def test_should_return_the_manual_for_a_help_command(client):
+    # SETUP
+    request = build_request_with_command("/sensei --help")
+    
+    # TEST
+    response = client.post(url_for('random_sensei'), data=request).json
+    
+    # ASSERT
+    assert response['color'] != ''
+    assert response['message'] == app.config['MANUAL']
 
 
 def test_full_command_with_mocked_hip_chat(client, mocker):

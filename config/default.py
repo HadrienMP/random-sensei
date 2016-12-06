@@ -1,7 +1,7 @@
 class Config():
     DEBUG = False
     HIPCHAT_TOKEN = 'room token'
-    HIPCHAT_BASE_URL = 'http://darty-de.hipchat.com'
+    HIPCHAT_BASE_URL = 'https://api.hipchat.com'
     HIPCHAT_ROOM_URL_FORMAT = HIPCHAT_BASE_URL + '/v2/room/{room}/participant'
     MANUAL = '''Here are a few examples of how to use random-sensei : 
 * Classic call with 2 senseis at random in the room /random-sensei
