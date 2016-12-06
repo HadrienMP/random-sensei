@@ -1,4 +1,4 @@
-import default
+from config import default
 
 
 class Local(default.Config):
