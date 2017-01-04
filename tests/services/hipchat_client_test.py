@@ -9,7 +9,7 @@ def test_should_return_room_members_in_a_public_room(config):
     assert len(members) > 1 # A public room only has one "member" but maybe more participants
 
 def test_should_return_room_members_in_a_private_room(config):
-    members = hipchat_client.get_room_members("2761718")
+    members = hipchat_client.get_room_members("2247343")
     
     assert len(members) > 1 # A public room only has one "member" but maybe more participants
 
