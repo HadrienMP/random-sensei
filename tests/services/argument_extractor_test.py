@@ -65,6 +65,14 @@ def test_should_extract_excluded_senseis():
     assert arguments.excluded_senseis == ['foo', 'bar']
 
 
+def test_should_extract_excluded_senseis_even_with_non_spaces_blanks():
+    # TEST
+    arguments = from_command('/random-sensei --without foo\u2002bar\u0009qix')
+
+    # ASSERT
+    assert arguments.excluded_senseis == ['foo', 'bar', 'qix']
+
+
 def test_should_extract_excluded_senseis_with_arobase():
     # TEST
     arguments = from_command('/random-sensei --without @foo')

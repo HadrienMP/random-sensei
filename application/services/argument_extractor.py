@@ -16,7 +16,7 @@ def from_command(command):
         raise SenseiCommandException("This is not a valid sensei command")
 
     elif m.group(2):
-        arguments_strings = m.group(2).split(" ")
+        arguments_strings = re.split(r'\s+', m.group(2))
 
         arguments.number_of_senseis = get_number_of_senseis(arguments_strings)
         arguments.manual = is_manual_asked(arguments_strings)
