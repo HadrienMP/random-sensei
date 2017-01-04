@@ -5,7 +5,7 @@ from application.services import hipchat_client
 from config.sensei_gifs import *
 
 
-def random_senseis_message(room, number_of_senseis, requester=None, excluded_senseis=None):
+def random_senseis_message(room, number_of_senseis, requester=None, excluded_senseis=list()):
     room_members = _get_room_members_without_requester(room, requester)
     senseis = _get_potential_senseis(room_members, excluded_senseis)
     picked_senseis = _pick_random_senseis(senseis=senseis, number_of_senseis=number_of_senseis)
@@ -25,8 +25,7 @@ def _get_room_members_without_requester(room, requester=None):
     return room_members
 
 
-def _get_potential_senseis(room_members, excluded_senseis=None):
-    excluded_senseis = excluded_senseis if excluded_senseis else list()
+def _get_potential_senseis(room_members, excluded_senseis):
     return [sensei for sensei in room_members if sensei not in excluded_senseis]
 
 
